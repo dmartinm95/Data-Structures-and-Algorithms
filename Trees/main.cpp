@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 struct Node {
     int value;
@@ -53,6 +54,110 @@ public:
             std::cout << root->value << " ";
             inOrderTraversal(root->right);
         }
+    }
+
+    void breadthFirstSearch(Node *root) {
+        // Base case
+        if (root == nullptr) {
+            return;
+        }
+
+        // Create a queue to store children nodes
+        std::queue<Node *> q;
+
+        // Enqueue the root
+        q.push(root);
+
+        while (q.empty() == false) {
+            // Print the front of the queue and remove it from queue
+            Node *node = q.front();
+            std::cout << node->value << " ";
+            q.pop();
+
+            // Enqueue left child if it exists
+            if (node->left != nullptr) {
+                q.push(node->left);
+            }
+
+            // Enqueue right child if it exists
+            if (node->right != nullptr) {
+                q.push(node->right);
+            }
+        }
+
+        // Time complexity: O(n) where n is the number of nodes in the BST
+        // Space complexity: O(n) where n is the number of nodes in the BST
+    }
+
+    void breadthFirstSearchRecursive(std::queue<Node *> &q) {
+
+        // Base case
+        if (q.empty()) {
+            return;
+        }
+
+        Node *node = q.front();
+
+        std::cout << node->value << " ";
+
+        q.pop();
+
+        if (node->left != nullptr) {
+            q.push(node->left);
+        }
+        if (node->right != nullptr) {
+            q.push(node->right);
+        }
+
+        // Recursive case
+        breadthFirstSearchRecursive(q);
+    }
+
+    void depthFirstSearchInorder(Node *node) {
+        // Base case
+        if (node == nullptr) {
+            return;
+        }
+
+        // Traverse all the left subtree
+        depthFirstSearchInorder(node->left);
+
+        // Visit the node
+        std::cout << node->value << " ";
+
+        // Traverse all the right subtree
+        depthFirstSearchInorder(node->right);
+    }
+
+    void depthFirstSearchPreorder(Node *node) {
+        // Base case
+        if (node == nullptr) {
+            return;
+        }
+
+        // Visit the node
+        std::cout << node->value << " ";
+
+        // Traverse all the left subtree
+        depthFirstSearchPreorder(node->left);
+
+        // Traverse all the right subtree
+        depthFirstSearchPreorder(node->right);
+    }
+    void depthFirstSearchPostorder(Node *node) {
+        // Base case
+        if (node == nullptr) {
+            return;
+        }
+
+        // Traverse all the left subtree
+        depthFirstSearchPostorder(node->left);
+
+        // Traverse all the right subtree
+        depthFirstSearchPostorder(node->right);
+
+        // Visit the node
+        std::cout << node->value << " ";
     }
 
     void deleteNode(int value) {
@@ -161,8 +266,26 @@ int main() {
     bst.insert(11);
     bst.insert(18);
 
+    std::cout << "Breadth First Search (Iterative) of original BST:\n";
+    bst.breadthFirstSearch(bst.root);
+    std::cout << "\n";
+
+    std::queue<Node *> q;
+    q.push(bst.root);
+    std::cout << "Breadth First Search (Recursive) of original BST:\n";
+    bst.breadthFirstSearchRecursive(q);
+    std::cout << "\n";
+
     std::cout << "Inorder traversal of original BST:\n";
-    bst.inOrderTraversal(bst.root);
+    bst.depthFirstSearchInorder(bst.root);
+    std::cout << "\n";
+
+    std::cout << "Preorder traversal of original BST:\n";
+    bst.depthFirstSearchPreorder(bst.root);
+    std::cout << "\n";
+
+    std::cout << "Postorder traversal of original BST:\n";
+    bst.depthFirstSearchPostorder(bst.root);
     std::cout << "\n";
 
     // Leaf node
